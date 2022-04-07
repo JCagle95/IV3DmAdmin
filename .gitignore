@@ -126,3 +126,4 @@ dmypy.json
 
 # Django Database Migrations
 migrations/
+wsgi_production.py
