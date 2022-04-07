@@ -2,7 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-
+if os.name == 'posix':
+    import IV3DmAdmin.wsgi_production
 
 def main():
     """Run administrative tasks."""
