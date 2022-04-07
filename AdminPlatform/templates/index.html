@@ -1,0 +1,276 @@
+<!--
+=========================================================
+* Now UI Design System PRO - v2.1.0
+=========================================================
+
+* Product Page:  https://www.creative-tim.com/product/now-ui-design-system-pro
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>
+    IV3Dm Admin Platform
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700,200|Open+Sans+Condensed:700" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+  <!-- Project Script -->
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <!-- CSS Files -->
+  <link href="{% static 'css/now-design-system-pro.css' %}?v=2.1.0" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/OpusMediaRecorder.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/opus-media-recorder@latest/encoderWorker.umd.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+
+</head>
+
+<body class="reset-basic">
+  <!-- Navbar Transparent -->
+  <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3  navbar-transparent ">
+    <div class="container">
+      <a class="navbar-brand  text-white " href="" rel="tooltip" title="Cough Meter (Demo)" data-placement="bottom">
+        IV3Dm Admin Platform
+      </a>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <header>
+    <div class="page-header min-vh-50" style="background-image: url(&quot;../assets/img/bg45.jpg&quot;); background-position-y: 50%;">
+      <span class="mask bg-dark opacity-8"></span>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto text-white text-center">
+            <h2 class="text-white">IV3Dm Server Contents</h2>
+            <p class="lead">Choose the IP Port Below to view or upload/delete contents</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row bg-white shadow mt-n5 border-radius-lg pb-4 p-3 mx-sm-0 mx-1 position-relative">
+        <div class="col-lg-3 mt-lg-n2 mt-2">
+          <label class="">Port</label>
+          <select class="form-control" name="PortSelectionList" id="PortSelectionList" onchange="changeFolder(this);">
+          </select>
+        </div>
+        <div class="col-lg-3 mt-lg-n2 mt-2">
+          <label class="">&nbsp;</label>
+          <button type="button" class="btn bg-gradient-primary w-100 mb-0" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload</button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Upload File or Drag File to Server (Single)</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="/server" class="form-control dropzone" id="dropzone">
+                    <div class="fallback">
+                      <input name="file" type="file" />
+                    </div>
+                    <input id="portID" name="port" type="text" value="" hidden/>
+                  </form>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn bg-gradient-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="pt-5 mt-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="card">
+            <div class="table-responsive" style="overflow: inherit;">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th style="width:30%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Filename</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Size</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date of Modification</th>
+                    <th style="width: 10%"></th>
+                  </tr>
+                </thead>
+                <tbody id="portFolderContent">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--   Core JS Files   -->
+
+  <script src="{% static 'js/core/jquery.min.js' %}"></script>
+  <script src="{% static 'js/core/popper.min.js' %}"></script>
+  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/plugins/perfect-scrollbar.min.js' %}"></script>
+  <!-- Control Center for Black Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static 'js/now-design-system-pro.min.js' %}" type="text/javascript"></script>
+  <!-- Bootstrap Switches  -->
+  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
+  <script src="{% static 'js/plugins/typedjs.js' %}"></script>
+  <script src="{% static 'js/plugins/parallax.min.js' %}"></script>
+  <script src="{% static 'js/plugins/nouislider.min.js' %}"></script>
+  <script src="{% static 'js/plugins/glidejs.min.js' %}"></script>
+  <script src="{% static 'js/plugins/anime.min.js' %}"></script>
+  <script src="{% static 'js/plugins/sweetalert.min.js' %}"></script>
+  <script src="{% static 'js/plugins/choices.min.js' %}"></script>
+  <script src="{% static 'js/plugins/dropzone.min.js' %}"></script>
+
+  <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    var tableRowTemplate = `
+    <tr id="{FILENAME}">
+      <td>
+        <div class="d-flex px-2">
+          <div class="ms-2 my-auto">
+            <h6 class="mb-0 text-xs">{FILENAME}</h6>
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="text-xs font-weight-bold mb-0">{FILESIZE}</p>
+      </td>
+      <td>
+        <p class="text-xs font-weight-bold mb-0">{MODIFYDATE}</p>
+      </td>
+      <td class="align-middle">
+        <div class="dropdown">
+          <button class="btn btn-link text-secondary mb-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa fa-ellipsis-v text-xs"></i>
+          </button>
+          <ul class="dropdown-menu px-2 py-3" data-popper-placement="bottom-start">
+            <li><a class="dropdown-item border-radius-md" href="javascript:downloadFile('{FILENAME}');">Download</a></li>
+            <li><a class="dropdown-item border-radius-md" href="javascript:removeFile('{FILENAME}');">Remove</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    `;
+
+    $(document).ready(function() {
+      requestServerInformation();
+    })
+
+    function formatDateString(timestamp)
+    {
+      var dateStruct = new Date(timestamp*1000);
+      dateStruct.setTime( dateStruct.getTime() + dateStruct.getTimezoneOffset()*60*1000 );
+
+      var formatter = "{%b} {%D}, {%Y}"
+      MonthString = ["January","Feburary","March","April","May","June","July","August","September","October","November","December"]
+      MonthString_Short = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"]
+      if (dateStruct.getHours() > 11) ampm = "PM"
+      else ampm = "AM"
+      formatter = formatter.replaceAll("{%Y}",dateStruct.getFullYear()).replaceAll("{%B}",MonthString[dateStruct.getMonth()]).replaceAll("{%b}",MonthString_Short[dateStruct.getMonth()]).replaceAll("{%D}",dateStruct.getDate())
+      formatter = formatter.replaceAll("{%H}",dateStruct.getHours()).replaceAll("{%M}",String(dateStruct.getMinutes()).padStart(2,'0')).replaceAll("{%S}",String(dateStruct.getSeconds()).padStart(2,'0')).replaceAll("{%P}",ampm)
+      return formatter
+    }
+
+
+    function changeFolder(el) {
+      loadPortFolder(el.value)
+    }
+
+    function loadPortFolder(id) {
+      document.getElementById("portID").value = id
+      var tbody = document.getElementById("portFolderContent")
+      tbody.innerHTML = ""
+      for (var i = 0; i < serverInformation[id].length; i++) {
+        tbody.innerHTML += tableRowTemplate.replaceAll("{FILENAME}", serverInformation[id][i]["Filename"]).replace("{MODIFYDATE}", formatDateString(serverInformation[id][i]["Date"])).replace("{FILESIZE}", (serverInformation[id][i]["Size"]/1024/1024).toFixed(2) + " MB")
+      }
+    }
+
+    var serverInformation;
+    async function requestServerInformation() {
+      const response = await fetch(window.location.origin + "/server", {method: "POST", headers: { 'X-CSRFToken': csrftoken },})
+      if (response.status == 200) {
+        serverInformation = await response.json();
+        console.log(serverInformation)
+
+        var selectList = document.getElementById("PortSelectionList")
+        for (var i = 0; i < serverInformation["ServerPort"].length; i++) {
+          var option = document.createElement("option");
+          option.value = serverInformation["ServerPort"][i];
+          option.text = serverInformation["ServerPort"][i];
+          selectList.appendChild(option);
+        }
+
+        const portSelector = new Choices(selectList, {
+          shouldSort: true
+        });
+
+        loadPortFolder(selectList.value);
+      }
+    }
+
+    async function removeFile(filename) {
+      var portID = document.getElementById("portID").value
+      var formData = new FormData()
+      formData.append("port", portID);
+      formData.append("removeFile", filename);
+      const response = await fetch(window.location.origin + "/server", {method: "POST", body: formData, headers: { 'X-CSRFToken': csrftoken },})
+      if (response.status == 200) {
+        document.getElementById(filename).remove()
+        var indexToRemove = -1
+        for (var i = 0; i < serverInformation[portID].length; i++) {
+          if (serverInformation[portID][i]["Filename"] == filename) {
+            indexToRemove = i
+          }
+        }
+        if (indexToRemove >= 0) {
+          serverInformation[portID].splice(indexToRemove, 1)
+        }
+      }
+    }
+
+  </script>
+
+</body>
+
+</html>
